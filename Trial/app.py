@@ -20,7 +20,10 @@ def logs_in():
     if request.method == "POST":
         name = request.form["username"]
         pwd = request.form["pwd"]
-        return render_template("retailer.html", name=name)
+        retailers_list = []
+        retailers_list.append({name:pwd})
+        print(retailers_list)
+        return render_template("retailer.html", name=retailers_list)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -8,7 +8,7 @@ def homePage():
 @app.route('/farmersHomePage', methods=["POST"])
 def farmersPage():
     if request.method == "POST":
-        if request.form["email"] == "shreesha":
+        if request.form["username"] == "shreesha":
             return "Hello"
         else:
             return render_template("index.html")
@@ -16,7 +16,7 @@ def farmersPage():
 @app.route('/retailersHomePage', methods=["POST"])
 def retailersPage():
     if request.method == "POST":
-        if request.form["email"] == "shreesha":
+        if request.form["username"] == "shreesha":
             return "Hello"
         else:
             return render_template("index.html")

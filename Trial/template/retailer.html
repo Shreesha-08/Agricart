@@ -7,6 +7,9 @@
     <title>Hello</title>
 </head>
 <body>
-    <p>Welcome {{ name }}</p>
+    <p>{% for n in name %}
+            {{ n }}
+        {% endfor %}
+    </p>
 </body>
 </html>
