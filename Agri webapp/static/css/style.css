@@ -1,3 +1,6 @@
+html {
+    height: 100%;
+}
 .login-container{
     margin-top: 5%;
     margin-bottom: 5%;
@@ -5,6 +8,7 @@
 .login-form-1{
     padding: 5%;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
 }
 .login-form-1 h3{
     text-align: center;
@@ -12,9 +16,10 @@
 }
 .login-form-2{
     padding: 5%;
-    background: #557C55;
+    background-color: rgb(72, 201, 252);
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
     color: #fff;
+    border-radius: 10px;
 }
 .login-form-2 h3{
     text-align: center;
@@ -35,11 +40,12 @@
 .login-form-1 .btnSubmit{
     font-weight: 600;
     color: #fff;
-    background-color: #8aa784;;
+    background-color:rgb(8, 175, 241);
+    text-decoration-color: rgb(72, 201, 252);
 }
 .login-form-2 .btnSubmit{
     font-weight: 600;
-    color: #8aa784;;
+    color: rgb(72, 201, 252);
     background-color: #fff;
 }
 .login-form-2 .ForgetPwd{
@@ -48,24 +54,25 @@
     text-decoration: none;
 }
 .login-form-1 .ForgetPwd{
-    color: #8aa784;;
+    color: skyblue;
     font-weight: 600;
     text-decoration: none;
 }
 
 body{
-    background-image: url("../images/output-onlinepngtools.png");
+    background-image: url("../images/output-onlinepngtools\ \(1\).png");
     background-size: cover;
     background-repeat: no-repeat;
     line-height: 3;
 }
 
+
 .sub2:hover{
     color: white;
-    background-color: #a4d1a4;
+    background-color: rgb(8, 175, 241);
 }
 
 .sub1:hover{
-    color: #557C55;
+    color: skyblue;
     background-color: #fff;
 }
