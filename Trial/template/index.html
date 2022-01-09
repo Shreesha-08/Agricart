@@ -7,6 +7,21 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Hello</p>
+    <p>Hello {{ name }}</p><br>
+    <p>Your password is {{ pwd }}</p>
+    <form action="/login" method="post">
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="">
+        <label for="pwd">Password: </label>
+        <input type="password" name="pwd" id="">
+        <button type="submit">Submit</button>
+    </form>
+    <form action="/retailer" method="post">
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="">
+        <label for="pwd">Password: </label>
+        <input type="password" name="pwd" id="">
+        <button type="submit">Submit as buyer</button>
+    </form>
 </body>
 </html>
