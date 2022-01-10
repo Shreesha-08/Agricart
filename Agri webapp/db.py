@@ -11,10 +11,17 @@ mysql = MySQL(app)
 
 class DatabaseActivities:
     def insert_to_farmers(self,obj):
-        phone = "90999"
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO farmers (f_name, f_pwd, ph_no) VALUES (%s, %s, %s)", (obj.name, obj.password, phone))
-        mysql.connection.commit()
-        return redirect(url_for('Index'))
+        with app.app_context():
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO farmers (f_name, f_pwd, ph_no) VALUES (%s, %s, %s)", (obj.name, obj.password, obj.phno))
+            mysql.connection.commit()
+            return render_template("index")
+    
+    def insert_to_retailers(self,obj):
+        with app.app_context():
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO customers (c_name, c_pwd, ph_no) VALUES (%s, %s, %s)", (obj.name, obj.password, obj.phno))
+            mysql.connection.commit()
+            return render_template("index")
 
 dbAct = DatabaseActivities()
