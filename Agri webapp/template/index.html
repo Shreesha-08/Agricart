@@ -13,6 +13,13 @@
         <div class="row">
             <div class="col-md-6 login-form-1">
                 <h3>Login for Farmers</h3>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <p>{{ message }}</p>  
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <form action="/farmersHomePage" method="post">
                     <label>Username</label>
                     <div class="form-group">
@@ -32,6 +39,13 @@
             </div>
             <div class="col-md-6 login-form-2">
                 <h3>Login for Retailers</h3>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <p>{{ message }}</p>  
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <form action="/retailersHomePage" method="post">
                     <label>Username</label>
                     <div class="form-group">
