@@ -10,7 +10,6 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '@0802root'
 app.config['MYSQL_DB'] = 'agri'
-app.secret_key = 'many random bytes'
 
 mysql = MySQL(app)
 app.secret_key = 'aight'
@@ -41,7 +40,7 @@ def farmersPage():
         flag = dbAct.check_login_farmers(user)
         if flag == 1:
             session["user_id"]=user.id
-            return render_template("registerF.html")
+            return render_template("farmerHome.html")
         else:
             return render_template("index.html", status1 = flag)
 
@@ -62,6 +61,9 @@ class InsertForRegistration:
 @app.route('/registerFarmers', methods=["POST", 'GET'])
 def farmerRegister():
     if request.method == "POST":
+        if dbAct.check_for_userF(request.form["fname"]):
+            flash("Username already exists!")
+            return render_template("registerF.html")
         pw = request.form["psw"]
         hashedPassword = generate_password_hash(
             pw,
@@ -76,7 +78,7 @@ def farmerRegister():
 @app.route('/registerRetailers', methods=["POST", 'GET'])
 def retailerRegister():
     if request.method == "POST":
-        if dbAct.check_for_user(request.form["rname"]):
+        if dbAct.check_for_userC(request.form["rname"]):
             flash("Username already exists!")
             return render_template("registerR.html")
         hashedPassword = generate_password_hash(

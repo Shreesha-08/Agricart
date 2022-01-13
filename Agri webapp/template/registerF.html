@@ -12,9 +12,15 @@
     <form action="/registerFarmers" method="post">
         <div class="container">
             <h1>Farmer Registration</h1>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <p>{{ message }}</p>  
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <p>Please fill in this form to create an account.</p>
             <hr>
-        
             <label for="fname"><b>Name</b></label>
             <input type="text" placeholder="Enter Name" name="fname" required>
         

@@ -59,7 +59,17 @@ class DatabaseActivities:
         cur.close()
         return cid
 
-    def check_for_user(self,usr):
+    def check_for_userF(self,usr):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT  * FROM farmers WHERE f_name=%s",[usr])
+        flag = cur.fetchall()
+        cur.close()
+        if flag:
+            return True
+        else:
+            return False
+
+    def check_for_userC(self,usr):
         cur = mysql.connection.cursor()
         cur.execute("SELECT  * FROM customers WHERE c_name=%s",[usr])
         flag = cur.fetchall()
