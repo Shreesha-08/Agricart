@@ -24,14 +24,12 @@ class DatabaseActivities:
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO farmers (f_name, f_pwd, ph_no) VALUES (%s, %s, %s)", (obj.name, obj.password, obj.phno))
             mysql.connection.commit()
-            return render_template("index")
     
     def insert_to_retailers(self,obj):
         with app.app_context():
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO customers (c_name, c_pwd, ph_no) VALUES (%s, %s, %s)", (obj.name, obj.password, obj.phno))
             mysql.connection.commit()
-            return render_template("index")
 
     def check_login_farmers(self,details):
         flag=0
@@ -54,13 +52,12 @@ class DatabaseActivities:
             j+=1
         return flag
     
-    def get_pwd(self, usr):
+    def get_cid(self, usr):
         cur = mysql.connection.cursor()
-        cur.execute("SELECT  * FROM customers WHERE c_name=%s",[usr])
-        pwd = cur.fetchall()
+        cur.execute("SELECT c_id FROM customers WHERE c_name=%s",usr)
+        cid = cur.fetchall()
         cur.close()
-        print(pwd)
-        return pwd[0][2]
+        return cid
 
     def check_for_user(self,usr):
         cur = mysql.connection.cursor()

@@ -1,9 +1,8 @@
 from typing_extensions import ParamSpecKwargs
 from werkzeug.security import generate_password_hash, check_password_hash
 from db import *
-from flask import Flask,flash, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 
 app = Flask(__name__,template_folder='template')
 
@@ -14,30 +13,20 @@ app.config['MYSQL_DB'] = 'agri'
 app.secret_key = 'many random bytes'
 
 mysql = MySQL(app)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-@login_manager.user_loader
-def load_user(user_id):
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM farmers where f_id = {user_id}" )
-    datas = cur.fetchall()
-    cur.close()
-    return datas
+app.secret_key = 'aight'
 
 with app.app_context():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT  * FROM farmers")
+    cur.execute("SELECT * FROM farmers")
     data = cur.fetchall()
     print(data)
     cur.close()
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def homePage():
     return render_template("index.html")
 
-class User(UserMixin):
+class User():
     id= ""
     name = ""
     password = ""
@@ -51,9 +40,10 @@ def farmersPage():
         user.password = request.form["password"]
         flag = dbAct.check_login_farmers(user)
         if flag == 1:
-            login_user(user)
+            session["user_id"]=user.id
             return render_template("registerF.html")
-    return render_template("index.html")
+        else:
+            return render_template("index.html", status1 = flag)
 
 class InsertForRegistration:
     def __init__(self,name,password,phno):
@@ -61,13 +51,13 @@ class InsertForRegistration:
         self.password = password
         self.phno = phno
 
-@app.route('/registerF.html')
-def fRegPage():
-    return render_template("registerF.html")
+# @app.route('/registerF.html')
+# def fRegPage():
+#     return render_template("registerF.html")
 
-@app.route('/registerR.html')
-def rRegPage():
-    return render_template("registerR.html")
+# @app.route('/registerR.html')
+# def rRegPage():
+#     return render_template("registerR.html")
 
 @app.route('/registerFarmers', methods=["POST", 'GET'])
 def farmerRegister():
@@ -78,9 +68,10 @@ def farmerRegister():
             method='pbkdf2:sha256',
             salt_length=3
         )
-        print(hashedPassword)
         insertFarmers = InsertForRegistration(request.form["fname"], hashedPassword, request.form["phno"])
         dbAct.insert_to_farmers(insertFarmers)
+        return redirect("/")
+    return render_template("registerF.html")
 
 @app.route('/registerRetailers', methods=["POST", 'GET'])
 def retailerRegister():
@@ -95,41 +86,28 @@ def retailerRegister():
         )
         insertRetailer = InsertForRegistration(request.form["rname"], hashedPassword, request.form["phno"])
         dbAct.insert_to_retailers(insertRetailer)
+        return redirect('/')
     return render_template("registerR.html")
 
 @app.route('/retailersHomePage', methods=["POST", 'GET'])
 def retailersPage():
     if request.method == "POST":
+        flag=0
         user = User()
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM customers WHERE c_name=%s",[request.form["username"]])
-        usr = cur.fetchall()
-        user.id = int(usr[0][0])
-        user.name = usr[0][1]
-        user.password = usr[0][2]
-        print(user)
-        cur.close()
-        if not user.name:
-            flash("Username does not exist, please try again.")
-            return render_template("index.html")
-        elif not check_password_hash(user.password, request.form["password"]):
-            flash('Password incorrect, please try again.')
-            return redirect(url_for('login'))
-        else:
-            # flag=0
-            # user = User()
-            # user.name = request.form["username"]
-            # user.password = request.form["password"]
-            # flag = dbAct.check_login_retailers(user)
-            # if flag == 1:
-            login_user(user)
+        user.name = request.form["username"]
+        user.password = request.form["password"]
+        flag = dbAct.check_login_retailers(user)
+        if flag == 1:
+            session["user_id"]=user.id
             return render_template("retailerLogin.html")
-    return render_template("index.html")
+        else:
+            return render_template("index.html", status2 = flag)
 
 @app.route('/logout')
 def logout():
-    logout_user()
-    return redirect(url_for('home'))
+    # logout_user()
+    session["user_id"] = None
+    return redirect(url_for('homePage'))
 
 if __name__ == "__main__":
     app.run(debug=True)
