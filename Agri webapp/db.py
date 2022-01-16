@@ -88,15 +88,15 @@ class DatabaseActivities:
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM stock WHERE f_id=%s AND crop=%s",(fid, crop.cName))
         exists = cur.fetchall()
-        crop.imgLocation = exists[0][4]
-        print(exists[0][4])
+        crop.imgLocation = '../static/images/'+ (crop.cName).replace(" ", "") +'.jpg'
+        print(crop.imgLocation)
         if exists:
             updatedQuantity = int(crop.quantity) + int(exists[0][2])
             updatedPrice = int(crop.price) + int(exists[0][3])
-            cur.execute("UPDATE stock SET quantity=%s, price=%s WHERE f_id=%s AND crop=%s", (updatedQuantity, updatedPrice, fid, crop.cName))
+            cur.execute("UPDATE stock SET quantity=%s, price=%s, description=%s WHERE f_id=%s AND crop=%s", (updatedQuantity, updatedPrice, crop.desc, fid, crop.cName))
             mysql.connection.commit()
         else:
-            cur.execute("INSERT INTO stock (crop, f_id, quantity, price) VALUES (%s, %s, %s, %s)", (crop.cName, fid, int(crop.quantity), int(crop.price)))
+            cur.execute("INSERT INTO stock (crop, f_id, quantity, price, imgLocation, description) VALUES (%s, %s, %s, %s, %s, %s)", (crop.cName, fid, int(crop.quantity), int(crop.price), crop.imgLocation, crop.desc))
             mysql.connection.commit()
         cur.close()
         
@@ -106,17 +106,6 @@ class DatabaseActivities:
         allCrops = cur.fetchall()
         cur.close()
         return allCrops
-
-    # def getCropsList(self, crops):
-    #     heroRegex = re.compile(r'rice|Rice|dal|Dal')
-    #     cropsList = []
-    #     print(crops)
-    #     for i in range(len(crops)):
-    #         mo1 = heroRegex.findall(crops[i][0])
-    #         print(mo1)
-    #         if mo1:
-    #             cropsList += mo1
-    #     return cropsList
 
     def deleteCrop(self,cName):
         cur = mysql.connection.cursor()

@@ -107,23 +107,33 @@ class Crop:
     quantity = 0
     price = 0
     imgLocation = ""
+    desc= ""
 
 @app.route("/updatestock", methods=["GET","POST"])
 def updateStock():
+    crops = ['Sona Masoori Rice', 'Basmati Rice', 'Brown Rice', 'Toor Dal', 'Chana Dal', 'Urad Dal', 'Green Moong Dal', 'Moong Dal', 'Rajma', 'Moong Dal', 'Groundnut', 'Groundnut Oil', 'Sunflower Oil', 'Bengal Gram', 'Kabuli Chana', 'Wheat', 'Wheat Flour', 'Rice Flour']
     if request.method == "POST":
+        if request.form["crop"] not in crops:
+            flash("Please choose a crop from the list")
+            return render_template("updateStock.html", crops = crops)
         crop = Crop()
         crop.cName = request.form["crop"]
         crop.quantity = request.form["quantity"]
         crop.price = request.form["price"]
+        crop.desc = request.form["cropDesc"]
         dbAct.addCrop(crop,session["user_id"])
         return redirect(url_for('farmersPage'))
-    return render_template("updateStock.html")
+    return render_template("updateStock.html", crops = crops)
 
 @app.route("/deletecrop/<name>")
 def deleteCrop(name):
     dbAct.deleteCrop(name)
     flash(f"{name} is removed successfully.")
     return redirect(url_for('farmersPage'))
+
+@app.route("/aboutus")
+def aboutUs():
+    return render_template("aboutUs.html")
 
 @app.route('/logout')
 def logout():
