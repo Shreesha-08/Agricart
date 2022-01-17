@@ -113,4 +113,38 @@ class DatabaseActivities:
         mysql.connection.commit()
         cur.close()
 
+    def addLand(self, land, fid):
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO land (land_reg_no, area, loc, f_id) VALUES (%s, %s, %s, %s)", (land.regNo, land.area, land.district, fid))
+        mysql.connection.commit()
+        cur.close()
+
+    def getLand(self,fid):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM land WHERE f_id=%s", [fid])
+        landDetails = cur.fetchall()
+        cur.close()
+        return landDetails
+
+    def getFarmer(self, fid):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM farmers where f_id=%s", [fid])
+        data = cur.fetchall()
+        cur.close()
+        return data
+
+    def getProducts(self):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM products")
+        products = cur.fetchall()
+        cur.close()
+        return products
+
+    def getRetailer(self, cid):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM customers where c_id=%s", [cid])
+        data = cur.fetchall()
+        cur.close()
+        return data
+
 dbAct = DatabaseActivities()

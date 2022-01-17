@@ -14,11 +14,11 @@ app.config['MYSQL_DB'] = 'agri'
 mysql = MySQL(app)
 app.secret_key = 'aight'
 
-with app.app_context():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM farmers")
-    data = cur.fetchall()
-    cur.close()
+# with app.app_context():
+#     cur = mysql.connection.cursor()
+#     cur.execute("SELECT * FROM farmers")
+#     data = cur.fetchall()
+#     cur.close()
 
 @app.route('/')
 def homePage():
@@ -46,7 +46,6 @@ def farmersPage():
             return render_template("index.html", status1 = flag)
     crops = ()
     crops = dbAct.getAllCrops(session["user_id"])
-    print(crops)
     return render_template("farmerHome.html", crops=crops)
 
 class InsertForRegistration:
@@ -98,9 +97,12 @@ def retailersPage():
         flag = dbAct.check_login_retailers(user)
         if flag == 1:
             session["user_id"]=user.id
-            return render_template("retailerLogin.html")
+            products = dbAct.getProducts()
+            return render_template("retailersHome.html", products = products)
         else:
             return render_template("index.html", status2 = flag)
+    products = dbAct.getProducts()
+    return render_template("retailersHome.html", products = products)
 
 class Crop:
     cName = ""
@@ -131,9 +133,49 @@ def deleteCrop(name):
     flash(f"{name} is removed successfully.")
     return redirect(url_for('farmersPage'))
 
+@app.route("/profilefarmer")
+def profileFarmer():
+    det = dbAct.getLand(session["user_id"])
+    fdata = dbAct.getFarmer(session["user_id"])
+    return render_template("profileF.html", land = det, fdata=fdata)
+
+class Land():
+    regNo= ""
+    area = 0
+    district = ""
+
+@app.route("/addland", methods=["POST", "GET"])
+def allLand():
+    districts = ['Bengaluru Rural', 'Shivamogga', 'Chikmagalur', 'Raichur']
+    if request.method == "POST":
+        if request.form["district"] not in districts:
+            flash("Please choose a district from the list")
+            return render_template("updateStock.html", districts = districts)
+        land = Land()
+        land.regNo = request.form["regno"]
+        land.area = request.form["area"]
+        land.district = request.form["district"]
+        dbAct.addLand(land,session["user_id"])
+        return redirect(url_for('profileFarmer'))
+    return render_template("addLand.html", districts = districts)
+
 @app.route("/aboutus")
 def aboutUs():
     return render_template("aboutUs.html")
+
+cart = []
+print(cart)
+@app.route("/addtocart/<name>")
+def addtoCart(name):
+    cart.append(name)
+    flash(f"{name[2]} is added to cart successfully.")
+    return redirect(url_for('retailersPage'))
+
+@app.route("/profileretailer")
+def profileRetailer():
+    # det = dbAct.getLand(session["user_id"])
+    rdata = dbAct.getRetailer(session["user_id"])
+    return render_template("profileF.html", rdata=rdata)
 
 @app.route('/logout')
 def logout():
