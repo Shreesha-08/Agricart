@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, request
 from flask_mysqldb import MySQL
-from werkzeug.security import generate_password_hash, check_password_hash
-import re
+from werkzeug.security import check_password_hash
+from datetime import date
+
+today = date.today()
 
 app = Flask(__name__,template_folder='template')
 app.config['MYSQL_HOST'] = 'localhost'
@@ -49,7 +51,6 @@ class DatabaseActivities:
     def check_login_retailers(self,details):
         flag=0
         j=0
-        print(rdata)
         while j < len(rdata):
             if check_password_hash(rdata[j][2], details.password) and (details.name==rdata[j][1]):
                 details.id = rdata[j][0]
@@ -89,7 +90,6 @@ class DatabaseActivities:
         cur.execute("SELECT * FROM stock WHERE f_id=%s AND crop=%s",(fid, crop.cName))
         exists = cur.fetchall()
         crop.imgLocation = '../static/images/'+ (crop.cName).replace(" ", "") +'.jpg'
-        print(crop.imgLocation)
         if exists:
             updatedQuantity = int(crop.quantity) + int(exists[0][2])
             updatedPrice = int(crop.price) + int(exists[0][3])
@@ -135,7 +135,10 @@ class DatabaseActivities:
 
     def getProducts(self):
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM products")
+        cur.callproc("getProduct")
+        # print("\n\n\n",cur.fetchall())
+        # for i in cur.stored_results:
+        #     products = i.fetchall()
         products = cur.fetchall()
         cur.close()
         return products
@@ -146,5 +149,65 @@ class DatabaseActivities:
         data = cur.fetchall()
         cur.close()
         return data
+
+    def addCart(self, item):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM cart where pid=%s", [item])
+        exists = cur.fetchall()
+        if exists:
+            updatedQ = exists[0][1] + 1
+            cur.execute("UPDATE cart SET quantity=%s where pid=%s", (updatedQ, item))
+        else:
+            cur.execute("INSERT INTO cart values(%s,%s)", (item, 1))
+        mysql.connection.commit()
+        cur.close()
+
+    def deleteCart(self, item):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM cart where pid=%s", [item])
+        exists = cur.fetchall()
+        if exists[0][1] == 1:
+            cur.execute("DELETE FROM cart WHERE pid=%s",[item])
+        else:
+            updatedQ = exists[0][1] - 1
+            cur.execute("UPDATE cart SET quantity=%s where pid=%s", (updatedQ, item))
+        mysql.connection.commit()
+        cur.close()
+
+    def getCart(self):
+        with app.app_context():
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM cart")
+            exists = cur.fetchall()
+            cur.close()
+            return exists
+
+    def placeOrder(self, cart, cid):
+        d1 = today.strftime(r"%Y-%m-%d")
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO orderpk values()")
+        cur.execute("SELECT MAX(order_id) FROM orderpk")
+        oID = cur.fetchone()
+        for items in cart:
+            cur.execute("SELECT * FROM products WHERE stock_no=%s", [items[0]])
+            data = cur.fetchone()
+            p = data[5] * items[1]
+            cur.execute("INSERT INTO orders(order_id, crops, quantity, price, c_id, f_id, pick_up_loc, ordered_date) values(%s,%s,%s,%s,%s,%s,%s,%s)", (oID[0], data[3], items[1]*100, p, cid, data[1], data[2], d1))
+        cur.execute("DELETE FROM cart where pid>0")
+        mysql.connection.commit()
+        cur.close()
+
+    def clearCart(self):
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM cart where pid>0")
+        mysql.connection.commit()
+        cur.close()
+
+    def getOrderDetails(self,cid):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM orders where c_id=%s",[cid])
+        cdata = cur.fetchall()
+        cur.close()
+        return cdata
 
 dbAct = DatabaseActivities()

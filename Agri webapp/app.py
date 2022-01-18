@@ -1,5 +1,5 @@
 from typing_extensions import ParamSpecKwargs
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from db import *
 from flask import Flask, flash, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
@@ -87,8 +87,20 @@ def retailerRegister():
         return redirect('/')
     return render_template("registerR.html")
 
+cartKeys = []
+carts = ()
+carts = dbAct.getCart()
+cart = {}
+for i in carts:
+    cart[i[0]]= i[1]
+    cartKeys.append(i[0])
+
 @app.route('/retailersHomePage', methods=["POST", 'GET'])
 def retailersPage():
+    carts = dbAct.getCart()
+    for i in carts:
+        cart[i[0]]= i[1]
+        cartKeys.append(i[0])
     if request.method == "POST":
         flag=0
         user = User()
@@ -98,11 +110,11 @@ def retailersPage():
         if flag == 1:
             session["user_id"]=user.id
             products = dbAct.getProducts()
-            return render_template("retailersHome.html", products = products)
+            return render_template("retailersHome.html", products = products, cart=cart, cartKeys=cartKeys)
         else:
             return render_template("index.html", status2 = flag)
     products = dbAct.getProducts()
-    return render_template("retailersHome.html", products = products)
+    return render_template("retailersHome.html", products = products, cart=cart, cartKeys=cartKeys)
 
 class Crop:
     cName = ""
@@ -163,24 +175,96 @@ def allLand():
 def aboutUs():
     return render_template("aboutUs.html")
 
-cart = []
-print(cart)
-@app.route("/addtocart/<name>")
-def addtoCart(name):
-    cart.append(name)
-    flash(f"{name[2]} is added to cart successfully.")
+# cart = {}
+
+@app.route("/addtocart/<int:pid>")
+def addtoCart(pid):
+    # if pid in cart.keys():
+    #     cart[pid] = cart[pid] + 1
+    # else:
+    #     cart[pid] = 1
+    dbAct.addCart(pid)
+    if pid not in cart.keys():
+        cartKeys.append(pid)
+    carts = dbAct.getCart()
+    for i in carts:
+        cart[i[0]]= i[1]
+        cartKeys.append(i[0])
     return redirect(url_for('retailersPage'))
 
-@app.route("/profileretailer")
+@app.route("/decreaseQ/<pid>")
+def incrementQuantity(pid):
+    val = cart[int(pid)]
+    # if val == 1:
+    #     del cart[int(pid)]
+    # else:
+    #     cart[int(pid)] = cart[int(pid)] - 1
+    if val == 1:
+        cartKeys.remove(int(pid))
+        cart[int(pid)] = 0
+    dbAct.deleteCart(pid)
+    carts = dbAct.getCart()
+    for i in carts:
+        cart[i[0]]= i[1]
+        cartKeys.append(i[0])
+    return redirect(url_for('retailersPage'))
+
+@app.route("/gotocart")
+def goToCart():
+    products = dbAct.getProducts()
+    carts = dbAct.getCart()
+    for i in carts:
+        cart[i[0]]= i[1]
+        cartKeys.append(i[0])
+    print(cart)
+    print(products)
+    return render_template("cart.html", products = products, cart=cart)
+
+@app.route("/ordercomplete")
+def placeOrder():
+    carts = dbAct.getCart()
+    dbAct.placeOrder(carts, session["user_id"])
+    flash("Order Placed! Please visit our center in a week to collect your order.")
+    return redirect(url_for('retailersPage'))
+
+@app.route("/profileRetailer")
 def profileRetailer():
-    # det = dbAct.getLand(session["user_id"])
+    det = dbAct.getOrderDetails(session["user_id"])
     rdata = dbAct.getRetailer(session["user_id"])
-    return render_template("profileF.html", rdata=rdata)
+    return render_template("profileR.html", rdata=rdata, det=det)
 
 @app.route('/logout')
 def logout():
+    dbAct.clearCart()
     session["user_id"] = None
     return redirect(url_for('homePage'))
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# cart = []
+# class CartList:
+#     def __init__(self, fid, loct, name, quantity, price, reqQ):
+#         f_id = fid
+#         loc = loct
+#         crop = name
+#         totQ = quantity
+#         iprice = price
+#         requiredQuantity = reqQ
+
+# @app.route("/addtocart/<fid>/<loc>/<name>/<quantity>/<price>")
+# def addtoCart(fid, loc, name, quantity, price):
+#     if requiredQ == 0:
+#         flash("Please enter required quantity.")
+#         return redirect(url_for('retailersPage'))
+#     cart.append(CartList(int(fid), loc, name, int(quantity), int(price), requiredQ))
+#     print(cart)
+#     flash(f"{name} is added to cart successfully.")
+#     return redirect(url_for('retailersPage'))
+
+# @app.route("/addthiscrop", methods=["POST", "GET"])
+# def addThisCrop():
+#     if request.method == "POST":
+#         global requiredQ
+#         requiredQ = request.form["qreq"]
+#     return redirect(url_for('retailersPage'))

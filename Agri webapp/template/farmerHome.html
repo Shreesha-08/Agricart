@@ -49,10 +49,10 @@
             {% for crop in crops %}
                 <div class="col-md-6">
                     <div class="card" style="width: 18rem;">
-                                <img src= '{{ crop[4] }}' alt="no image" class="card-img-top" alt="...">
+                                <img src= '{{ crop[5] }}' alt="no image" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">{{ crop[0] }}</h5>
-                            <p class="card-text">Quantity: {{ crop[2] }} kg <br>Price: {{ crop[3] }} rupees <br></p>
+                            <h5 class="card-title">{{ crop[1] }}</h5>
+                            <p class="card-text">Quantity: {{ crop[3] }} kg <br>Price: {{ crop[4] }} rupees <br></p>
                             <a href="/deletecrop/{{ crop[0] }}" class="btn btn-primary">Delete</a>
                         </div>
                     </div>

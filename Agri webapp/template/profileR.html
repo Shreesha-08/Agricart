@@ -54,7 +54,7 @@
     </nav>
     <div class="container">
         <p>Welcome Retailer!</p> 
-        <p>Name: {{fdata[0][1]}} <br >Phone: {{fdata[0][3]}}</p><br>
+        <p>Name: {{rdata[0][1]}} <br >Phone: {{rdata[0][3]}}</p><br>
         <h2>Previous Orders</h2>
         <table>
             <tr>
@@ -62,13 +62,15 @@
                 <th>Crop</th>
                 <th>Quantity</th>
                 <th>Price</th>
+                <th>Date</th>
             </tr>
-            {% for d in orders %}
+            {% for d in det %}
                 <tr>
                     <td>{{ d[0] }} </td>
                     <td>{{ d[1] }}</td>
                     <td>{{ d[2] }}</td>
                     <td>{{ d[3] }}</td>
+                    <td>{{ d[7] }}</td>
                 </tr>
             {% endfor %}
     </div>

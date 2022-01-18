@@ -44,15 +44,30 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
+        <a href="/gotocart" class="btn btn-primary">Go to cart</a>
         <div class="row">
             {% for product in products %}
                 <div class="col-md-6">
                     <div class="card" style="width: 18rem;">
-                        <img src= '{{ product[5] }}' alt="no image" class="card-img-top" alt="...">
+                        <img src= '{{ product[6] }}' alt="no image" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">{{ product[2] }}</h5>
-                            <p class="card-text">Quantity: {{ product[3] }} kg <br>Price: {{ product[4] }} rupees/kg <br>District: {{ product[1] }}</p>
-                            <a href="/addtocart/{{ product }}" class="btn btn-primary">Add to cart</a>
+                            <h5 class="card-title">{{ product[3] }}</h5>
+                            <p class="card-text">Quantity Available: {{ product[4] }} kg <br>Price: {{ product[5] }} rupees/100 kg <br>District: {{ product[2] }}</p><br>
+                            <!-- {% if requiredQ == 0 %}
+                                <form action="/addthiscrop" method="post">
+                                    <label class="form-label mt-4">Quantity required: </label>
+                                    <input type="number" class="form-control" name="qreq" placeholder="Enter quantity to be ordered" min="100" max="{{ product[3] }}" step="100" required>
+                                    <button type="submit" class="btn btn-primary">Ok</button>
+                                </form>
+                            {% else %}
+                                <br><p class="card-text">Quantity placed for order: {{ requiredQ }} kg <br>
+                            {% endif %}-->
+                            {% if product[0] in cartKeys %}
+                                <a href="/addtocart/{{ product[0] }}"><button class="btn-primary"> + </button></a> {{ cart[product[0]] }} 
+                                <a href="/decreaseQ/ {{ product[0] }}"><button class="btn-primary"> - </button></a>
+                            {% else %}
+                                <a href="/addtocart/{{ product[0] }}" class="btn btn-primary">Add to cart</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
