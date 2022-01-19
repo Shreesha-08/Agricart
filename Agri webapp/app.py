@@ -184,8 +184,8 @@ def addtoCart(pid):
     if pid in cartKeys:
         for i in products:
             if i[0] == pid:
-                q = i[5]
-        if cart[pid] > q:
+                q = i[4]
+        if (cart[pid]+1)*100 > q:
             flash("Please Check Stock Availability before adding")
             return redirect(url_for('retailersPage'))
     dbAct.addCart(pid)
