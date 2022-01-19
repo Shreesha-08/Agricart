@@ -190,6 +190,13 @@ class DatabaseActivities:
             data = cur.fetchone()
             p = data[5] * items[1]
             cur.execute("INSERT INTO orders(order_id, crops, quantity, price, c_id, f_id, pick_up_loc, ordered_date) values(%s,%s,%s,%s,%s,%s,%s,%s)", (oID[0], data[3], items[1]*100, p, cid, data[1], data[2], d1))
+            cur.execute("SELECT * FROM stock WHERE stock_no=%s", [items[0]])
+            stockData = cur.fetchone()
+            qAvailable = stockData[3] - items[1]*100
+            if qAvailable == 0:
+                cur.execute("DELETE FROM stock WHERE stock_no=%s", [items[0]])
+            else:
+                cur.execute("UPDATE stock SET quantity=%s WHERE stock_no=%s", (qAvailable, items[0]))
         cur.execute("DELETE FROM cart where pid>0")
         mysql.connection.commit()
         cur.close()

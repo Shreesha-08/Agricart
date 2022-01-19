@@ -15,6 +15,7 @@ app.secret_key = 'aight'
 
 @app.route('/')
 def homePage():
+    dbAct.clearCart()
     return render_template("index.html")
 
 class User():
@@ -178,6 +179,15 @@ def aboutUsR():
 
 @app.route("/addtocart/<int:pid>")
 def addtoCart(pid):
+    fetchCart()
+    products = dbAct.getProducts()
+    if pid in cartKeys:
+        for i in products:
+            if i[0] == pid:
+                q = i[5]
+        if cart[pid] > q:
+            flash("Please Check Stock Availability before adding")
+            return redirect(url_for('retailersPage'))
     dbAct.addCart(pid)
     if pid not in cart.keys():
         cartKeys.append(pid)
@@ -190,6 +200,9 @@ def incrementQuantity(pid):
     if val == 1:
         cartKeys.remove(int(pid))
         cart[int(pid)] = 0
+    if not val:
+        flash("You dont have this product in your cart!")
+        return redirect(url_for('retailersPage'))
     dbAct.deleteCart(pid)
     fetchCart()
     return redirect(url_for('retailersPage'))
