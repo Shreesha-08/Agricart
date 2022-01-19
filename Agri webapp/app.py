@@ -1,4 +1,3 @@
-from typing_extensions import ParamSpecKwargs
 from werkzeug.security import generate_password_hash
 from db import *
 from flask import Flask, flash, render_template, request, redirect, url_for, session
@@ -13,12 +12,6 @@ app.config['MYSQL_DB'] = 'agri'
 
 mysql = MySQL(app)
 app.secret_key = 'aight'
-
-# with app.app_context():
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM farmers")
-#     data = cur.fetchall()
-#     cur.close()
 
 @app.route('/')
 def homePage():
@@ -89,18 +82,22 @@ def retailerRegister():
 
 cartKeys = []
 carts = ()
-carts = dbAct.getCart()
 cart = {}
-for i in carts:
-    cart[i[0]]= i[1]
-    cartKeys.append(i[0])
 
-@app.route('/retailersHomePage', methods=["POST", 'GET'])
-def retailersPage():
+def fetchCart():
     carts = dbAct.getCart()
     for i in carts:
         cart[i[0]]= i[1]
         cartKeys.append(i[0])
+fetchCart()
+
+def clearCartBuffer():
+    cartKeys.clear()
+    cart.clear()
+
+@app.route('/retailersHomePage', methods=["POST", 'GET'])
+def retailersPage():
+    fetchCart()
     if request.method == "POST":
         flag=0
         user = User()
@@ -175,49 +172,32 @@ def allLand():
 def aboutUs():
     return render_template("aboutUs.html")
 
-# cart = {}
+@app.route("/aboutusr")
+def aboutUsR():
+    return render_template("aboutUsR.html")
 
 @app.route("/addtocart/<int:pid>")
 def addtoCart(pid):
-    # if pid in cart.keys():
-    #     cart[pid] = cart[pid] + 1
-    # else:
-    #     cart[pid] = 1
     dbAct.addCart(pid)
     if pid not in cart.keys():
         cartKeys.append(pid)
-    carts = dbAct.getCart()
-    for i in carts:
-        cart[i[0]]= i[1]
-        cartKeys.append(i[0])
+    fetchCart()
     return redirect(url_for('retailersPage'))
 
 @app.route("/decreaseQ/<pid>")
 def incrementQuantity(pid):
     val = cart[int(pid)]
-    # if val == 1:
-    #     del cart[int(pid)]
-    # else:
-    #     cart[int(pid)] = cart[int(pid)] - 1
     if val == 1:
         cartKeys.remove(int(pid))
         cart[int(pid)] = 0
     dbAct.deleteCart(pid)
-    carts = dbAct.getCart()
-    for i in carts:
-        cart[i[0]]= i[1]
-        cartKeys.append(i[0])
+    fetchCart()
     return redirect(url_for('retailersPage'))
 
 @app.route("/gotocart")
 def goToCart():
     products = dbAct.getProducts()
-    carts = dbAct.getCart()
-    for i in carts:
-        cart[i[0]]= i[1]
-        cartKeys.append(i[0])
-    print(cart)
-    print(products)
+    fetchCart()
     return render_template("cart.html", products = products, cart=cart)
 
 @app.route("/ordercomplete")
@@ -225,6 +205,7 @@ def placeOrder():
     carts = dbAct.getCart()
     dbAct.placeOrder(carts, session["user_id"])
     flash("Order Placed! Please visit our center in a week to collect your order.")
+    clearCartBuffer()
     return redirect(url_for('retailersPage'))
 
 @app.route("/profileRetailer")
@@ -235,6 +216,7 @@ def profileRetailer():
 
 @app.route('/logout')
 def logout():
+    clearCartBuffer()
     dbAct.clearCart()
     session["user_id"] = None
     return redirect(url_for('homePage'))

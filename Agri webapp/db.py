@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask
 from flask_mysqldb import MySQL
 from werkzeug.security import check_password_hash
 from datetime import date
@@ -136,9 +136,6 @@ class DatabaseActivities:
     def getProducts(self):
         cur = mysql.connection.cursor()
         cur.callproc("getProduct")
-        # print("\n\n\n",cur.fetchall())
-        # for i in cur.stored_results:
-        #     products = i.fetchall()
         products = cur.fetchall()
         cur.close()
         return products
