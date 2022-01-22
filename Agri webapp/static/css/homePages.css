@@ -1,0 +1,59 @@
+.container{
+    padding: 2%;
+}
+
+body{
+    background-color: #e7f8f2;
+}
+
+h1{
+    margin: 2% 0;
+}
+
+h5{
+    color: red;
+    margin: 2% 0;
+}
+
+h6{
+    color: rgb(146, 146, 146);
+    margin: 2% 0;
+}
+
+.cardStyling{
+    padding: 1.5%;
+    text-align: center;
+    margin: 3% auto;
+    /* color: white;
+    background-color: rgb(216, 193, 193); */
+    background-color: #e7f8f2;
+}
+
+.colStyle{
+    text-align: center;
+    margin: auto;
+}
+
+.updateStyle{
+    margin: 1% auto;
+    padding: 2%;
+}
+
+.qandp{
+    text-align: left;
+}
+
+.profileName{
+    text-align: center;
+    font-size: 1.5em;
+    color: #5a5a5a;
+}
+
+.profile{
+    font-size: 1.2em;
+    color: rgb(0, 0, 0);
+}
+
+.land{
+    margin: 3% auto;
+}

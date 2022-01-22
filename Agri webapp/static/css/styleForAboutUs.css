@@ -1,11 +1,11 @@
 body {
     background-image: url('../images/landscape-wheat-farm-green.jpg');
     background-repeat: no-repeat;
-    background-size:cover ;
+    background-size: cover ;
 }
 
 .container {
-    padding: 130px 150px;
+    padding: 100px 120px;
     color: white;
 }
 .about {
@@ -32,3 +32,9 @@ div .seg{
     font-size: 2rem;
 }
 
+@media screen and (max-width: 992px) {
+    .container {
+        padding: 30px 35px;
+        color: white;
+    }
+}
