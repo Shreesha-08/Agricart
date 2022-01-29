@@ -1,17 +1,40 @@
 body {
-    background-image: url('../images/landscape-wheat-farm-green.jpg');
+    /* background-image: url('../images/landscape-wheat-farm-green.jpg');
     background-repeat: no-repeat;
-    background-size: cover ;
+    background-size: cover ; */
+    background-color: rgb(224, 247, 224);
 }
 
 .container {
     padding: 100px 120px;
-    color: white;
+    color: black;
 }
 .about {
     text-align: center;
     font-size: 70px;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.car-row{
+    text-align: center;
+    width: 85%;
+    margin: auto;
+}
+
+#working{
+    background-color: #78C2AD;
+    padding: 2rem;
+    color: rgb(255, 255, 255);
+}
+
+#locations{
+    padding: 10% 10% 0;
+    text-align: center;
+    position: relative;
+}
+
+#locations .col-lg-3{
+    padding: 1.8rem 1.5rem;
 }
 
 div .text {
@@ -35,6 +58,5 @@ div .seg{
 @media screen and (max-width: 992px) {
     .container {
         padding: 30px 35px;
-        color: white;
     }
 }

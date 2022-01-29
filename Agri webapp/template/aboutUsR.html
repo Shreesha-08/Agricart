@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,59 +10,146 @@
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/styleForAboutUs.css">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-        <a class="navbar-brand" href="/retailersHomePage">AgriCart</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="/retailersHomePage">Home
-                    <span class="visually-hidden">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/profileRetailer">Profile</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="aboutusr">About us</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
-                </li>
-            </ul>
+            <a class="navbar-brand" href="/retailersHomePage">AgriCart</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/retailersHomePage">Home
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profileRetailer">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aboutusr">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
+    <div id="working">
+        <p class="about">About Us.</p>
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row car-row">
+                        <div class="col-sm-6">
+                            <img src="https://media.giphy.com/media/IfsxP5r7WmhP5P6seN/giphy.gif" alt="" width="70%">
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>Take Crops From Farmers</h3>
+                            <p>We buy the crops in raw form for further processing.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row car-row">
+                        <div class="col-sm-6">
+                            <img src="https://media.giphy.com/media/iqkUhBIdNOetJWXtNx/giphy.gif" alt="" width="70%">
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>Process The Crops</h3>
+                            <p>We will process the crops by sending it to mills and polishing.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row car-row">
+                        <div class="col-sm-6">
+                            <img src="https://i.gifer.com/Q0t0.gif" alt="" width="70%">
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>Retailers Collects From Warehouse</h3>
+                            <p>Retailers who have placed order can visit the warehouse in the location where they have
+                                ordered crops and collect the order in 6-8 days.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <section id="locations">
+        <p class="about">Locations</p>
+        <div class="row">
+            <div class="col-lg-3">
+                <h3>Bengaluru Rural</h3>
+                <p>70, Plain Road, Bengaluru Rural-562114</p>
+            </div>
+            <div class="col-lg-3">
+                <h3>Shivamogga</h3>
+                <p>201, Divided Street, Shivamogga-577201</p>
+            </div>
+            <div class="col-lg-3">
+                <h3>Chikmagalur</h3>
+                <p>31, Farm View, Chikmagalur-577101</p>
+            </div>
+            <div class="col-lg-3">
+                <h3>Raichur</h3>
+                <p>14, ITSE Road, Raichur-584135</p>
+            </div>
+        </div>
+    </section>
     <div class="container">
         <p class="about">About Us.</p>
         <div class="text">
-            <p class="fw-bolder" style="border:3px; border-style:solid; border-color:#ffffff; padding: 1em; box-shadow: 5px 5px #ffffff; border-radius: 5px;">We help farmers to
-            sell their crops on our website. Many farmers are facing difficulty in selling their crops by depending upon local
-            traders and middlemen. But we have come up with a solution which eases their effort!
-            In the farmer portal a farmer will be able to update information on their crops. The Retailers also, once in their
-            portal can buy the crops they want. We have centers in each district for the farmers to approach if they want clarifications on how to use this website.</p>
+            <p class="fw-bolder"
+                style="border:3px; border-style:solid; border-color:#000; padding: 1em; box-shadow: 5px 5px #000; border-radius: 5px;">
+                We help farmers to
+                sell their crops on our website. Many farmers are facing difficulty in selling their crops by depending
+                upon local
+                traders and middlemen. But we have come up with a solution which eases their effort!
+                In the farmer portal a farmer will be able to update information on their crops. The Retailers also,
+                once in their
+                portal can buy the crops they want. We have centers in each district for the farmers to approach if they
+                want clarifications on how to use this website.</p>
 
         </div>
         <p class="text1">To Contact Us:</p>
-        <div class="seg"><div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        <div class="seg">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Queries</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
         </div>
-        <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Queries</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-    </div>
-</div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
 </body>
+
 </html>
-    
-    
-    
-    

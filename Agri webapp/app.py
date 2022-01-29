@@ -217,7 +217,7 @@ def goToCart():
 def placeOrder():
     carts = dbAct.getCart()
     dbAct.placeOrder(carts, session["user_id"])
-    flash("Order Placed! Please visit our center in a week to collect your order.")
+    flash("Order Placed! Please visit our center in 6-8 days to collect your order.")
     clearCartBuffer()
     return redirect(url_for('retailersPage'))
 
