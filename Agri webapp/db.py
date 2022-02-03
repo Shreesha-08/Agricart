@@ -91,8 +91,10 @@ class DatabaseActivities:
         exists = cur.fetchall()
         crop.imgLocation = '../static/images/'+ (crop.cName).replace(" ", "") +'.jpg'
         if exists:
-            updatedQuantity = int(crop.quantity) + int(exists[0][2])
-            updatedPrice = int(crop.price) + int(exists[0][3])
+            oldPrice = int(exists[0][3]) * int(exists[0][4])
+            newStockPrice = int(crop.quantity) * int(crop.price)
+            updatedQuantity = int(crop.quantity) + int(exists[0][3])
+            updatedPrice = round(((oldPrice + newStockPrice) )/ updatedQuantity, 0)
             cur.execute("UPDATE stock SET quantity=%s, price=%s, description=%s WHERE f_id=%s AND crop=%s", (updatedQuantity, updatedPrice, crop.desc, fid, crop.cName))
             mysql.connection.commit()
         else:
