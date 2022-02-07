@@ -44,7 +44,7 @@
                     <th>Location</th>
                 </tr>
                 {% for p in products %}
-                    {% if p[0] in cart.keys() %}
+                    {% if p[0] in cart.keys() and cart[p[0]]>0 %}
                         <tr>
                             <td>{{ p[3] }} </td>
                             <td>{{ cart[p[0]]*100 }}</td>

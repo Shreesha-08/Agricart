@@ -2,6 +2,10 @@ body{
     background-color: #69be9f;
 }
 
+.container{
+  margin-top: 5%;
+}
+
 input[type=text], select, textarea{
     width: 100%;
     padding: 12px;
